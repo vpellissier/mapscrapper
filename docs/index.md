@@ -1,9 +1,6 @@
 Webscrapping data with RSelenium
 ================
 
-Webscrapping data with RSelenium
-================================
-
 Preliminary steps
 -----------------
 
