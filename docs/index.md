@@ -1,4 +1,4 @@
-Webscrapping data with RSelenium
+Webscrapping data with mapscrapper
 ================
 
 Preliminary steps
