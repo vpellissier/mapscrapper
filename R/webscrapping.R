@@ -15,15 +15,15 @@ dropdown_values <- function(nuts = NULL, remDr = NULL){
     }
     
     nuts <- nuts + 1
-    values_nuts <- vector()
+    #values_nuts <- vector()
     
-    while(length(values_nuts) < 1){
-        refresh(remDr)
+    #while(length(values_nuts) < 1){
+     #   refresh(remDr)
         menu_nuts <- findElement(remDr, using = "id", value = paste0("sel", nuts)) %>% 
             findElementsFromElement("css selector", "option")
         values_nuts <- unlist(sapply(menu_nuts,getElementText))[-c(1,2)]
-        return(values_nuts)        
-    }
+    #}
+    return(values_nuts)
 }
 
 
@@ -58,7 +58,7 @@ download_map_country <- function(country = NULL, root_path = NULL){
     )
     
     cat('A Chrome window will open shortly. Do not close it!')
-    Sys.sleep(5)
+    Sys.sleep(2)
     
     remDr <- remoteDr(browserName = "chrome", port = 4444L, extraCapabilities = eCaps) %>%
         go("http://www.opentransportmap.info/download")  
@@ -83,6 +83,7 @@ download_map_country <- function(country = NULL, root_path = NULL){
             }
         }
     }
+    remDr %>% deleteSession()
 }
 
 
