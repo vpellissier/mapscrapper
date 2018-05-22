@@ -38,12 +38,21 @@ selecting_nuts <- function(nuts = NULL, n = NULL, remDr){
 
 #' @export
 download_map_country <- function(country = NULL, root_path = NULL){
+    if(is.null(root_path))
+        stop("Please provide a path to a download directory")
+    
+    if(!dir.exists(root_path))
+        dir.create(rooth_path)
+    
+    if(!dir.exists(file.path(root_path, country)))
+       dir.create(file.path(root_path, country))
+    
     eCaps <- list(
         chromeOptions = 
             list(prefs = list(
                 "profile.default_content_settings.popups" = 0L,
                 "download.prompt_for_download" = FALSE,
-                "download.default_directory" = "C:/test"
+                "download.default_directory" = file.path(root_path, country)
             )
             )
     )
