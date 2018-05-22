@@ -5,7 +5,7 @@ Authors@R: person("Vincent", "Pellissier", email = "vincent.pellissier@gmail.com
 Description: Navigates trough the dropdown menus of openstransportmap website to download the maps (as .zip files)
 Depends: R (>= 3.5.0)
 License: GPL
-Imports:
+Depends:
 	seleniumPipes
 Encoding: UTF-8
 LazyData: true
