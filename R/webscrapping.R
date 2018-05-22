@@ -42,7 +42,7 @@ download_map_country <- function(country = NULL, root_path = NULL){
         stop("Please provide a path to a download directory")
     
     if(!dir.exists(root_path))
-        dir.create(rooth_path)
+        dir.create(root_path)
     
     if(!dir.exists(file.path(root_path, country)))
        dir.create(file.path(root_path, country))
