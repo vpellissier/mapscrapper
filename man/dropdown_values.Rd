@@ -4,10 +4,12 @@
 \alias{dropdown_values}
 \title{Scraping opentransportmap}
 \usage{
-dropdown_values(nuts = NULL, remDr)
+dropdown_values(nuts = NULL, remDr = NULL)
 }
 \arguments{
 \item{country}{Name of the country for which the map should be downloaded}
+
+\item{browser}{Name of the browser used to download the data}
 }
 \description{
 This function downloads every .zip file for a given country from the opentransportmap website.

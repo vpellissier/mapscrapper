@@ -2,4 +2,4 @@
 
 export(download_map_country)
 export(dropdown_values)
-import(RSelenium)
+import(seleniumPipes)

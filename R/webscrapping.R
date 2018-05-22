@@ -5,39 +5,54 @@
 #' There are a few preliminary steps to carry out before using it, please refer to the document XXX.
 #'  
 #' @param country Name of the country for which the map should be downloaded
+#' @param browser Name of the browser used to download the data
 #' @export
-#' @import RSelenium
-dropdown_values <- function(nuts = NULL, remDr){
+#' @import seleniumPipes
+dropdown_values <- function(nuts = NULL, remDr = NULL){
+    if(is.null(remDr)){
+        remDr <- remoteDr(browserName = "chrome", port = 4444L)
+        go(remDr, "http://www.opentransportmap.info/download")
+    }
+    
     nuts <- nuts + 1
-    menu_nuts <- remDr$findElement(using = "id", value = paste0("sel", nuts))
-    webElems <- menu_nuts$findChildElements("css selector", "option") # find every values in the dropdown list (first and second to be discarded)
-    values_nuts <- unlist(sapply(webElems, function(x) x$getElementText()))[-c(1,2)]
-    return(values_nuts)
+    values_nuts <- vector()
+    
+    while(length(values_nuts) < 1){
+        refresh(remDr)
+        menu_nuts <- findElement(remDr, using = "id", value = paste0("sel", nuts)) %>% 
+            findElementsFromElement("css selector", "option")
+        values_nuts <- unlist(sapply(menu_nuts,getElementText))[-c(1,2)]
+        return(values_nuts)        
+    }
 }
 
 
 
 selecting_nuts <- function(nuts = NULL, n = NULL, remDr){
-    elem <- remDr$findElement(using = 'css selector', 
-                              paste0('#sel', nuts + 1, ' > option:nth-child(', 
-                                     n + 2, ')'))
-    elem$clickElement()
+    remDr %>% 
+        findElement(using = 'css selector', 
+                    paste0('#sel', nuts + 1, ' > option:nth-child(', n + 2, ')')) %>%
+        elementClick()
 }
 
 
 #' @export
-download_map_country <- function(country = NULL){
-    fprof <- makeFirefoxProfile(list(browser.download.dir = "C:\\test"
-                                     ,  browser.download.folderList = 2L
-                                     , browser.download.manager.showWhenStarting = FALSE
-                                     , browser.helperApps.neverAsk.saveToDisk = "application/zip"))
-     
-    cat('A firefox window will open shortly. Do not close it!')
+download_map_country <- function(country = NULL, root_path = NULL){
+    eCaps <- list(
+        chromeOptions = 
+            list(prefs = list(
+                "profile.default_content_settings.popups" = 0L,
+                "download.prompt_for_download" = FALSE,
+                "download.default_directory" = "C:/test"
+            )
+            )
+    )
+    
+    cat('A Chrome window will open shortly. Do not close it!')
     Sys.sleep(5)
-    rDr <- rsDriver(port = 4567L, browser = "firefox", verbose = F, extraCapabilities = fprof)
-    remDr <- rDr[["client"]]
-    Sys.sleep(5)
-    remDr$navigate("http://opentransportmap.info/download/")
+    
+    remDr <- remoteDr(browserName = "chrome", port = 4444L, extraCapabilities = eCaps) %>%
+        go("http://www.opentransportmap.info/download")  
     
     nuts <- 0
     names_countries <- dropdown_values(nuts = nuts, remDr = remDr)
@@ -53,8 +68,7 @@ download_map_country <- function(country = NULL){
             
             for(n_nuts3 in seq(length(dropdown_values(nuts = 3, remDr = remDr)))){
                 selecting_nuts(nuts = 3, n = n_nuts3, remDr = remDr)
-                download_button <- remDr$findElement(using = "id", value = "db")
-                download_button$clickElement()
+                remDr %>% findElement("id", "db") %>% elementClick()
                 Sys.sleep(6)
                 print(n_nuts3)
             }
