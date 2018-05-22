@@ -1,23 +1,24 @@
-Webscrapping data with mapscrapper
-================
+---
+title: "Webscrapping data with RSelenium"
+output: github_document
+---
+# Webscrapping data with RSelenium
 
-Preliminary steps
------------------
-
+## Preliminary steps
 ### Installing a usable web browser
 
 Before we can actually scrap data from the website, we need to setup a web browser that will run in the background. I recommand using Chrome (mainly because I could not manage doing it with Firefox but you're free to try it).
 
 ### Installing Rtools
 
-We also needs an external software to create some external files, called RTools. The installer can be downloaded here: <https://cran.r-project.org/bin/windows/Rtools/index.html>. During the instalation tick the box "Add Rtools to system path"
+We also needs an external software to create some external files, called RTools. The installer can be downloaded [here](https://cran.r-project.org/bin/windows/Rtools/index.html). During the instalation tick the box "Add Rtools to system path"
 
 ### Installing the mapscrapper package
 
 A brand new, not super efficient and certainly not optimized package to scrap the opentransportmap website!
 
-``` r
-devtools::install_github("vpellissier/mapscrapper")
+``` {r}
+devtools::install_github("vpellissier/mapscrapper", ref = "pipes")
 ```
 
 ### Installing and starting a Selenium server
@@ -29,31 +30,27 @@ Once downloaded, the server can be started using command line (either windows + 
 Where path is the path were you have downloaded the file, and file the name of the file (should end with a .jar extension)
 
 
-Scrapping the website
----------------------
-
-Downloading all the zip file for a given country is quite straightforward. First, we need to know the name of the countries in the first dropdownlist
+## Scrapping the website
+Downloading all the zip file for a given country is quite straightforward.
+First, we need to know the name of the countries in the first dropdownlist
 
 ### Gathering the names of the countries (NUTS0)
-
 The dropdown_values function can list all the possible values of a given NUTS level (here, 0):
 
-``` r
+```{r}
 library(mapscrapper)
 names_nuts0 <- dropdown_values(nuts = 0, remDr = NULL)
 ```
-
-If this return an error message, you need to re-run the code above!
+If this return an error message, you need to re-run the lines in the last two code snippets!
 
 The function returns a vector containing the names of the NUTS0 as they are in the website:
-
-    ## character(0)
+```{r echo = F}
+head(names_nuts0)
+```
 
 ### Downloading the maps for a given country
-
 The zip files are going to be downloaded in the default download folder of your computer:
-
-``` r
+```{r eval = F}
 download_map_country("Estonia", root_path = "C:/Maps")
 ```
 
