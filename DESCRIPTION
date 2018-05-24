@@ -1,6 +1,6 @@
 Package: mapscrapper
 Title: Scrapping the opentransportmap webiste
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: person("Vincent", "Pellissier", email = "vincent.pellissier@gmail.com", role = c("aut", "cre"))
 Description: Navigates trough the dropdown menus of openstransportmap website to download the maps (as .zip files)
 Depends:	R (>= 3.5.0),
