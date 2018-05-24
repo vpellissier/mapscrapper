@@ -10,7 +10,7 @@
 #' @import seleniumPipes
 dropdown_values <- function(nuts = NULL, remDr = NULL){
     if(is.null(remDr)){
-        remDr <- remoteDr(browserName = "firefox", port = 4444L)
+        remDr <- remoteDr(browserName = "chrome", port = 4444L)
         go(remDr, "http://www.opentransportmap.info/download")
     }
     
