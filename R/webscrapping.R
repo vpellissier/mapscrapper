@@ -10,7 +10,7 @@
 #' @import seleniumPipes
 dropdown_values <- function(nuts = NULL, remDr = NULL){
     if(is.null(remDr)){
-        remDr <- remoteDr(browserName = "chrome", port = 4444L)
+        remDr <- remoteDr(browserName = "firefox", port = 4444L)
         go(remDr, "http://www.opentransportmap.info/download")
     }
     
@@ -26,7 +26,7 @@ dropdown_values <- function(nuts = NULL, remDr = NULL){
     return(values_nuts)
 }
 
-
+# options("seleniumPipes_no_try_delay" = 8000)
 
 selecting_nuts <- function(nuts = NULL, n = NULL, remDr){
     remDr %>% 
@@ -63,8 +63,7 @@ download_map_country <- function(country = NULL, root_path = NULL){
     remDr <- remoteDr(browserName = "chrome", port = 4444L, extraCapabilities = eCaps) %>%
         go("http://www.opentransportmap.info/download")  
     
-    nuts <- 0
-    names_countries <- dropdown_values(nuts = nuts, remDr = remDr)
+    names_countries <- dropdown_values(nuts = 0, remDr = remDr)
     n <- which(names_countries == country)
     
     selecting_nuts(nuts = 0, n = n, remDr = remDr)
